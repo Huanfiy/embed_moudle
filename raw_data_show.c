@@ -1,14 +1,28 @@
+/*
+ * @file    raw_data_show.c
+ * @author  Pointspread Team
+ * @date    2025-08-29
+ * @brief   print raw data in hex format
+ * 
+ * Copyright (c) 2025 pointspread. All rights reserved.
+*/
 #include <stdio.h>
 
 /**
  * @brief 打印原始数据
  * @param data 数据
  * @param length 数据长度
+ * @param data_name 数据名称
  */
-static void raw_data_show(const char *data, int length)
+static void raw_data_show(const char *data, int length, char *data_name)
 {
-    char line_buffer[128]; // 缓存一行输出
+#define MAX_LINE_LENGTH 128
+#define SHOW_INTERFACE printf
 
+    char line_buffer[MAX_LINE_LENGTH]; // 缓存一行输出
+    SHOW_INTERFACE("--------------------------------\n");
+    SHOW_INTERFACE("%s\n", data_name);
+    SHOW_INTERFACE("--------------------------------\n");
     for (int i = 0; i < length; i += 16)
     {
         int line_end = (i + 16 < length) ? (i + 16) : length;
@@ -48,6 +62,6 @@ static void raw_data_show(const char *data, int length)
         pos += snprintf(line_buffer + pos, sizeof(line_buffer) - pos, "|\n");
 
         // 一次性输出整行
-        printf("%s", line_buffer);
+        SHOW_INTERFACE("%s", line_buffer);
     }
 }

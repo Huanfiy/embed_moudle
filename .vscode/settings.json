@@ -1,0 +1,26 @@
+{
+  "C_Cpp.intelliSenseEngine": "disabled",
+  "clangd.enable": true,
+
+  "[c]": {
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+  },
+  "[cpp]": {
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+  },
+
+  "C_Cpp.default.compilerPath": "/usr/bin/arm-none-eabi-gcc",
+  "C_Cpp.default.intelliSenseMode": "linux-gcc-arm",
+  "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+  "C_Cpp.codeAnalysis.clangTidy.path": "/usr/bin/clang-tidy",
+  "C_Cpp.codeAnalysis.clangTidy.args": ["--config-file=.clang-tidy", "-v"],
+  "C_Cpp.codeAnalysis.clangTidy.checks.enabled": ["*"],
+  "clangd.arguments": [
+    "--header-insertion=never",
+    "--suggest-missing-includes",
+    "--completion-style=detailed",
+    "--compile-commands-dir=${workspaceFolder}/.vscode",
+    "--background-index",
+    "--clang-tidy"
+  ]
+}
