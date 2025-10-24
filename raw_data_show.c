@@ -18,6 +18,7 @@
  * Copyright (c) 2025 pointspread. All rights reserved.
  */
 #include <stdio.h>
+#include <stdint.h>
 
 /**
  * @brief Print raw data in hexadecimal format with ASCII representation
@@ -25,25 +26,31 @@
  * @param length Length of the data buffer in bytes
  * @param data_name Name/description of the data being displayed
  */
-static void raw_data_show(const char *data, int length, const char *data_name)
+static void raw_data_show(const char *data, uint32_t length, const char *data_name)
 {
 #define MAX_LINE_LENGTH 128
 #define SHOW_INTERFACE  printf
+#define FILETE_LENGTH   MAX_LINE_LENGTH
 
     char line_buffer[MAX_LINE_LENGTH];
-    SHOW_INTERFACE("===== %s =====\n", data_name);
+    SHOW_INTERFACE("[%s] %d bytes\r\n", data_name, length);
+
+    if (length > FILETE_LENGTH) // too long, skip
+    {
+        return;
+    }
 
     for (int i = 0; i < length; i += 16)
     {
         // step 1: set line_end
-        int line_end = (i + 16 < length) ? (i + 16) : length;
-        int pos = 0;
+        uint32_t line_end = (i + 16 < length) ? (i + 16) : length;
+        uint32_t pos = 0;
 
         // step 2: format address portion
         pos += snprintf(line_buffer + pos, sizeof(line_buffer) - pos, "%04x: ", i);
 
         // step 3: format hexadecimal portion
-        for (int j = i; j < i + 16; j++)
+        for (uint32_t j = i; j < i + 16; j++)
         {
             if (j < line_end)
             {
@@ -64,7 +71,7 @@ static void raw_data_show(const char *data, int length, const char *data_name)
         pos += snprintf(line_buffer + pos, sizeof(line_buffer) - pos, " |");
 
         // step 5: format ASCII portion
-        for (int j = i; j < line_end; j++)
+        for (uint32_t j = i; j < line_end; j++)
         {
             char c = data[j];
             pos += snprintf(line_buffer + pos, sizeof(line_buffer) - pos, "%c",
